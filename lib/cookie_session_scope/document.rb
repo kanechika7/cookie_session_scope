@@ -54,7 +54,7 @@ module CookieSessionScope
         wcs = []
         ccs = current_cookie_sp(session)
         ccs.split('.').each do |s|
-          wcs << ccs.sub(/\*.*/,'*')
+          wcs << ccs.sub(s,"*").sub(/\*.*/,'*')
         end
         return wcs
       end
