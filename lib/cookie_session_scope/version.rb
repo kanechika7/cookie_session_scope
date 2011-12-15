@@ -1,3 +1,3 @@
-module CookieSeesionScope
+module CookieSessionScope
   VERSION = '0.0.1'
 end
