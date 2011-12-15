@@ -46,7 +46,8 @@ module CookieSessionScope
       end
 
       def current_cookie_sp session
-        @current_cookie_sp ||= eval("session"+cookie_sp.split(".").map{|s| "['#{s}']" }.join(''))
+        #@current_cookie_sp ||= eval("session"+cookie_sp.split(".").map{|s| "['#{s}']" }.join(''))
+        @current_cookie_sp ||= JSON.parse(session["user_info"])["sp"]
       end
 
       def wild_cards session
