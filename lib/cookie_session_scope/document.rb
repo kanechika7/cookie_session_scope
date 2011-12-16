@@ -58,11 +58,12 @@ module CookieSessionScope
       # @since 4.9.0
       # @version 4.9.0
       # @params session: session情報をそのまま入れる
-      define_method :cs_scope do |session|
+      # @params params: パジネート用
+      define_method :cs_scope do |session,params|
         ccs = current_cookie_sp(session)
         array = [{ :sp => /^#{ccs}.*/ }]
         wild_cards(session).each{|wc| array << { :sp => wc } }
-        return scoped.any_of(array)
+        return scoped.any_of(array).page(params[:page]).per(params[:per])
       end
 
     private
