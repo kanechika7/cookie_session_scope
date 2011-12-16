@@ -17,34 +17,34 @@
 
 ## ①  設定
 
-  class Model
-    include Mongoid::Document
+    class Model
+      include Mongoid::Document
+    
+      include CookieSessionScope::Document
+      cookie_session_scope 'user_info.sp'
   
-    include CookieSessionScope::Document
-    cookie_session_scope 'user_info.sp'
   
   
-  
-  class MoeldsController < ApplicationController
-  
-    def index
-      @models = Model.cs_scope session
-  
+    class MoeldsController < ApplicationController
+    
+      def index
+        @models = Model.cs_scope session
+    
 
 ## ② sp仕様
 
-  ex)
-    クッキーセッション sp: a.b.c の場合
-  
-    取得できるData
-           sp
-      （×）a.b
-      （○）a.*
-      （○）a.b.c
-      （○）a.b.*
-      （○）*
-      （○）a.b.c.d
-      （×）e
-      （×）a.f
+    ex)
+      クッキーセッション sp: a.b.c の場合
+    
+      取得できるData
+             sp
+        （×）a.b
+        （○）a.*
+        （○）a.b.c
+        （○）a.b.*
+        （○）*
+        （○）a.b.c.d
+        （×）e
+        （×）a.f
     
 
