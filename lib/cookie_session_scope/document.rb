@@ -75,7 +75,7 @@ module CookieSessionScope
       def current_cookie_sp session
         return @current_cookie_sp if @current_cookie_sp
         begin
-          sps = "user_info.sp".split(".")
+          sps = cookie_sp.split(".")
           sp1,spn = sps[0],sps[1..-1]
           ccsp = JSON.parse(session[sp1])
           ccsp = eval("ccsp"+spn.map{|s| "['#{s}']" }.join('')) if spn
