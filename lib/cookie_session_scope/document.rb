@@ -36,8 +36,8 @@ module CookieSessionScope
       #   cookie_session_scope 'user_info.sp'
       # 
       # @author Nozomu Kanechika
-      # @since 4.9.0
-      # @version 4.9.0
+      # @since 0.0.1
+      # @version 0.0.1
       # @params c_sp: クッキーのspが入っている場所
       def cookie_session_scope c_sp
         class_eval do
@@ -55,8 +55,8 @@ module CookieSessionScope
       #     @models = Model.cs_scope session,params
       #
       # @author Nozomu Kanechika
-      # @since 4.9.0
-      # @version 4.9.0
+      # @since 0.0.1
+      # @version 0.0.1
       # @params session: session情報をそのまま入れる
       # @params params: パジネート用
       define_method :cs_scope do |session,params|
@@ -70,8 +70,8 @@ module CookieSessionScope
 
       # cookieのsp情報を取得
       # @author Nozomu Kanechika
-      # @since 4.9.0
-      # @version 4.9.0
+      # @since 0.0.1
+      # @version 0.0.1
       # @params session
       def current_cookie_sp session
         return @current_cookie_sp if @current_cookie_sp
@@ -88,8 +88,8 @@ module CookieSessionScope
 
       # 絞り込み条件にかける情報取得
       # @author Nozomu Kanechika
-      # @since 4.9.0
-      # @version 4.9.0
+      # @since 0.0.1
+      # @version 0.0.1
       # @params session
       def wild_cards session
         wcs = []
