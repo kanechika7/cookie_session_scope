@@ -27,10 +27,18 @@ module CookieSessionScope
 
     module ClassMethods
 
-      # 設定
+      #
+      # モデルにspを設定します
+      # 
+      # class Model
+      #   include Mongoid::Document
+      #   include CookieSessionScope::Document
+      #   cookie_session_scope 'user_info.sp'
+      # 
       # @author Nozomu Kanechika
-      # @since
-      # @version
+      # @since 4.9.0
+      # @version 4.9.0
+      # @params c_sp: クッキーのspが入っている場所
       def cookie_session_scope c_sp
         class_eval do
           cattr_accessor :cookie_sp
@@ -38,18 +46,50 @@ module CookieSessionScope
         end
       end
 
+      #
+      # cookieのspを見て、絞込み条件をかけます
+      #
+      # class ModelsController < ApplicationController
+      # 
+      #   def index
+      #     @models = Model.cs_scope session
+      #
+      # @author Nozomu Kanechika
+      # @since 4.9.0
+      # @version 4.9.0
+      # @params session: session情報をそのまま入れる
       define_method :cs_scope do |session|
-        ccs   = current_cookie_sp(session)
+        ccs = current_cookie_sp(session)
         array = [{ :sp => /^#{ccs}.*/ }]
         wild_cards(session).each{|wc| array << { :sp => wc } }
         return scoped.any_of(array)
       end
 
+    private
+
+      # cookieのsp情報を取得
+      # @author Nozomu Kanechika
+      # @since 4.9.0
+      # @version 4.9.0
+      # @params session
       def current_cookie_sp session
-        #@current_cookie_sp ||= eval("session"+cookie_sp.split(".").map{|s| "['#{s}']" }.join(''))
-        @current_cookie_sp ||= JSON.parse(session["user_info"])["sp"]
+        return @current_cookie_sp if @current_cookie_sp
+        begin
+          sps = "user_info.sp".split(".")
+          sp1,spn = sps[0],sps[1..-1]
+          ccsp = JSON.parse(session[sp1])
+          ccsp = eval("ccsp"+spn.map{|s| "['#{s}']" }.join('')) if spn
+        rescue
+          raise CookieSessionScope::Error, "session `#{cookie_sp}` is nil."
+        end
+        @current_cookie_sp = ccsp
       end
 
+      # 絞り込み条件にかける情報取得
+      # @author Nozomu Kanechika
+      # @since 4.9.0
+      # @version 4.9.0
+      # @params session
       def wild_cards session
         wcs = []
         ccs = current_cookie_sp(session)
