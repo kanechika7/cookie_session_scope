@@ -5,7 +5,7 @@
     #    include Mongoid::Document
     #
     #    include CookieSessionScope::Document
-    #    cookie_session_scope 'sp','user_info.sp'
+    #    cookie_session_scope 'user_info.sp'
     #
     #
     #
