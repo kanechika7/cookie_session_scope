@@ -17,7 +17,7 @@ module CookieSessionScope
     #  class MoeldsController < ApplicationController
     #
     #    def index
-    #      @models = Model.cs_scope session
+    #      @models = Model.cs_scope session,params
     #
     #
 
@@ -52,7 +52,7 @@ module CookieSessionScope
       # class ModelsController < ApplicationController
       # 
       #   def index
-      #     @models = Model.cs_scope session
+      #     @models = Model.cs_scope session,params
       #
       # @author Nozomu Kanechika
       # @since 4.9.0

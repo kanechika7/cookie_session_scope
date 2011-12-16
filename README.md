@@ -28,7 +28,7 @@
     class MoeldsController < ApplicationController
     
       def index
-        @models = Model.cs_scope session
+        @models = Model.cs_scope session,params
     
 
 ## ② sp仕様
