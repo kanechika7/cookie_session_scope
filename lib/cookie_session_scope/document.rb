@@ -21,6 +21,9 @@ module CookieSessionScope
     #
     #
 
+    included do
+      field :sp
+    end
 
     module ClassMethods
 
@@ -28,20 +31,17 @@ module CookieSessionScope
       # @author Nozomu Kanechika
       # @since
       # @version
-      def cookie_session_scope m_sp, c_sp
+      def cookie_session_scope c_sp
         class_eval do
-          cattr_accessor :model_sp
           cattr_accessor :cookie_sp
-
-          self.model_sp  = m_sp ||= 'sp'
           self.cookie_sp = c_sp ||= 'user_info.sp'
         end
       end
 
       define_method :cs_scope do |session|
         ccs   = current_cookie_sp(session)
-        array = [{ model_sp.to_sym => /^#{ccs}.*/ }]
-        wild_cards(session).each{|wc| array << { model_sp.to_sym => wc } }
+        array = [{ :sp => /^#{ccs}.*/ }]
+        wild_cards(session).each{|wc| array << { :sp => wc } }
         return scoped.any_of(array)
       end
 
