@@ -47,7 +47,7 @@ module CookieSessionScope
       end
 
       #
-      # cookieのspを見て、絞込み条件をかけます
+      # clientのcookieのspを見て、絞込み条件をかけます
       #
       # class ModelsController < ApplicationController
       # 
@@ -60,21 +60,23 @@ module CookieSessionScope
       # @params session: session情報をそのまま入れる
       # @params params: パジネート用
       define_method :cs_scope do |session,params|
-        ccs = current_cookie_sp(session)
-        array = [{ :sp => /^#{ccs}.*/ }]
-        wild_cards(session).each{|wc| array << { :sp => wc } }
+        ccses,array = client_cookie_sp(session),[]
+        ccses.split(',').each do |ccs|
+          array = [{ :sp => /^#{ccs}.*/ }]
+          wild_cards(ccs).each{|wc| array << { :sp => wc } }
+        end
         return scoped.any_of(array).page(params[:page]).per(params[:per])
       end
 
     private
 
-      # cookieのsp情報を取得
+      # clientのcookieのsp情報を取得
       # @author Nozomu Kanechika
       # @since 0.0.1
       # @version 0.0.1
       # @params session
-      def current_cookie_sp session
-        return @current_cookie_sp if @current_cookie_sp
+      def client_cookie_sp session
+        return @client_cookie_sp if @client_cookie_sp
         begin
           sps = cookie_sp.split(".")
           sp1,spn = sps[0],sps[1..-1]
@@ -83,7 +85,7 @@ module CookieSessionScope
         rescue
           raise CookieSessionScope::Error, "session `#{cookie_sp}` is nil."
         end
-        @current_cookie_sp = ccsp
+        @client_cookie_sp = ccsp
       end
 
       # 絞り込み条件にかける情報取得
@@ -91,9 +93,8 @@ module CookieSessionScope
       # @since 0.0.1
       # @version 0.0.1
       # @params session
-      def wild_cards session
+      def wild_cards ccs
         wcs = []
-        ccs = current_cookie_sp(session)
         ccs.split('.').each do |s|
           wcs << ccs.sub(s,"*").sub(/\*.*/,'*')
         end
