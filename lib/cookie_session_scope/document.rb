@@ -68,8 +68,6 @@ module CookieSessionScope
         return scoped.any_of(array).page(params[:page]).per(params[:per])
       end
 
-    private
-
       # clientのcookieのsp情報を取得
       # @author Nozomu Kanechika
       # @since 0.0.1
@@ -87,6 +85,8 @@ module CookieSessionScope
         end
         @client_cookie_sp = ccsp
       end
+
+    private
 
       # 絞り込み条件にかける情報取得
       # @author Nozomu Kanechika
