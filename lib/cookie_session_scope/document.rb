@@ -65,7 +65,8 @@ module CookieSessionScope
           array = [{ :sp => /^#{ccs}.*/ }]
           wild_cards(ccs).each{|wc| array << { :sp => wc } }
         end
-        return scoped.any_of(array).page(params[:page]).per(params[:per])
+        #return scoped.any_of(array).page(params[:page]).per(params[:per])
+        return scoped.any_of(array)
       end
 
       # clientのcookieのsp情報を取得
