@@ -74,12 +74,15 @@ module CookieSessionScope
       # @since 0.0.1
       # @version 0.0.1
       # @params session
+      # @change
+      #   0.0.2: JSON形式以外も対応
       def client_cookie_sp session
         return @client_cookie_sp if @client_cookie_sp
         begin
           sps = cookie_sp.split(".")
           sp1,spn = sps[0],sps[1..-1]
-          ccsp = JSON.parse(session[sp1])
+          #ccsp = JSON.parse(session[sp1])
+          ccsp = session[sp1].is_a?(String) ? JSON.parse(session[sp1]) : session[sp1]
           ccsp = eval("ccsp"+spn.map{|s| "['#{s}']" }.join('')) if spn
         rescue
           raise CookieSessionScope::Error, "session `#{cookie_sp}` is nil."
